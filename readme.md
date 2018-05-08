@@ -1,1 +1,1 @@
-学习python的测试代码
+python study 
