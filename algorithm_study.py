@@ -66,9 +66,59 @@ def quick_sort_test():
     print(quickSort(list))
 
 
+'''
+广度优先搜索
+'''
+from collections import deque
+
+def person_is_found(name):
+
+    return name[-1] =='e' # 找 u 结尾的人名
+
+def breadthFirstSeach(name, graph=None):
+
+    search_queue = deque()
+    search_queue += graph[name]
+    searched =[] #记录检查过的人
+
+    while search_queue:
+
+        person = search_queue.popleft()#取出第一个人
+        # if  person not in searched:
+        if person_is_found(person):
+            print('got it %s' %person)
+            return True
+        else:
+            search_queue += graph[person]
+            searched.append(person)
+
+    return False
+
+
+def BFS_test():
+    my_dict ={}
+    my_dict['my_friend'] = ['onion','zhouzhou','juanjuan']
+    my_dict['onion'] =['alice','time']
+    my_dict['zhouzhou'] =['tutu','meimei']
+    my_dict['juanjuan'] =['tutu','chouchoe']
+    my_dict['alice'] =['eee']
+    my_dict['tim'] =[]
+    my_dict['tutu']=[]
+    my_dict['meimei'] =[]
+    my_dict['chouchoe']=[]
+    my_dict['eee']=[]
+
+    breadthFirstSeach('my_friend',my_dict)
+
+
+
+
+
+
 
 if __name__ =='__main__':
 
     # binary_search_test()
     # recursion_test()
-    quick_sort_test()
+    # quick_sort_test()
+    BFS_test()
