@@ -15,17 +15,21 @@ def binary_search(list,item):
         if guess == item:
             return mid
         elif guess < item:
-            low = guess + 1
+            print('guess {}'.format(guess))
+            low = mid + 1
+            print('low {}'.format(low))
         else:
-            high = guess -1
+
+            high = mid -1
+            print('high {}'.format(high))
 
     return None
 
 def binary_search_test():
 
-    list = [1, 2, 3, 4, 55, 66, 777]
+    list = [1, 2, 3, 5, 44, 55, 66, 777,778,888]
 
-    x = binary_search(list, 66)
+    x = binary_search(list, 55)
 
     print(x)
 # ------------------------------
@@ -118,7 +122,7 @@ def BFS_test():
 
 if __name__ =='__main__':
 
-    # binary_search_test()
+    binary_search_test()
     # recursion_test()
     # quick_sort_test()
-    BFS_test()
+    # BFS_test()
