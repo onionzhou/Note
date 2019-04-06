@@ -13,8 +13,9 @@ class Node(object):
 
 class SingleList(object):
     def __init__(self):
-        self._head = None # Node()  fix bug 遍历list时候多输出一个None
+        self._head =  Node()
         self._tail = self._head
+
 
     '''头插'''
 
@@ -27,20 +28,29 @@ class SingleList(object):
 
     def add_tail(self, e):
         new_node = Node(e)
-        self._tail.next = new_node
+        self._tail._next = new_node
         self._tail = new_node
+
 
     '''是否为空'''
 
     def is_empty(self):
         return self._head == None
 
+    def get_head(self):
+        if not self.is_empty():
+            return self._head
+
     '''遍历'''
 
-    def traversal(self):
+    def traversal(self,head=None):
 
         tmp = []
-        cur = self._head
+        if head is None:
+            cur = self._head
+        else :
+            cur = head
+
         if self.is_empty():
             print('list is empty')
             return
@@ -60,6 +70,7 @@ if __name__ == "__main__":
     x = SingleList()
     for i in range(8):
         x.add_head(i)
+        # x.add_tail(i)
     print(x.traversal())
     x.remove_list()
     print(x.traversal())
