@@ -6,12 +6,13 @@
 # @File    : heapsort.py
 # @Software: PyCharm
 
-'''
-index : 做操作的结点
-heapsize:树有多少个结点
-heapify 函数，注意点 1.不要越界 2.递归要有递归出口
-'''
+
 def heapify(arr, index, heapsize):
+    '''
+    index : 做操作的结点
+    heapsize:树有多少个结点
+    heapify 函数，注意点 1.不要越界 2.递归要有递归出口
+    '''
     if index >= heapsize:
         return
     #index 代表父节点
