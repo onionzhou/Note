@@ -4,10 +4,19 @@
 # datetime:2019/4/1 20:30
 # software: PyCharm
 import time
+import  functools
 #斐波那契数列 实现
 #初始值 0 接着值1 然后后续的值是前两个值的总和
 #0，1，1，2，3，5，8，13，21
+
+@functools.lru_cache()  #python 自带的缓存装饰器
+def bad_to_cache_fib(n):
+    if n <= 1:
+        return n
+    else :
+        return bad_fib(n-2) + bad_fib(n-1)
 #慢
+# @functools.lru_cache()  #python 自带的缓存装饰器
 def bad_fib(n):
     if n <= 1:
         return n
@@ -45,7 +54,7 @@ def yield_fib_test():
 if __name__ =="__main__":
     cache = {}
     start_time =time.time()
-
+    # bad_to_cache_fib(200)
     yield_fib_test()
 
     end_time =time.time()
