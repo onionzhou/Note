@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import queue
 class Node(object):
     def __init__(self, data):
         self.left = None
@@ -58,11 +59,12 @@ class BSTree(object):
 
         if not T:
             T = Node(data)
-        elif data < T.data:
+        else:
+            if data < T.data:
             # insert left child
-            T.left = self._insert(data, T.left)
-        elif data > T.data:
-            T.right = self._insert(data, T.right)
+                T.left = self._insert(data, T.left)
+            elif data > T.data:
+                T.right = self._insert(data, T.right)
         # if data is in the tree .we'll do nothing
         '''
         T.height = max(self.get_height(T.left), \
@@ -106,14 +108,11 @@ class BSTree(object):
             node = self.root
         else:
             node = args[0]
-
         if node.left:
-            self.preorder_tree(node.left)
-
+            self.midorder_tree(node.left)
         print(node.data, end=' ')
-
         if node.right:
-            self.preorder_tree(node.right)
+            self.midorder_tree(node.right)
 
     def postorder_tree(self, *args):
 
@@ -129,6 +128,68 @@ class BSTree(object):
             self.postorder_tree(node.right)
 
         print(node.data, end=' ')
+    def mid_order_tree_non_recursive(self,*args):
+        if len(args) == 0:
+            node = self.root
+        else:
+            node = args[0]
+        s = queue.LifoQueue()
+        while node or not s.empty():
+            while node :
+                s.put(node)
+                # print(node.data, end=" ")
+                node = node.left
+            if not s.empty():
+                node = s.get()
+                print(node.data,end=" ")
+                node =node.right
+    def pre_order_tree_non_recursive(self,*args):
+        '''
+        先序非递归操作
+        :param args:
+        :return:
+        '''
+        if len(args) == 0:
+            node = self.root
+        else:
+            node = args[0]
+        s = queue.LifoQueue()
+        while node or not s.empty():
+            while node :
+                s.put(node) #第一次访问结点
+                print(node.data, end=" ")
+                node = node.left
+            if not s.empty():
+                node = s.get()#第二次访问结点
+                node =node.right
+
+    def levelorder_tree(self,*args):
+        q = queue.Queue()
+        if len(args) == 0:
+            node = self.root
+        else:
+            node = args[0]
+        q.put(node)
+        while (not q.empty() ):
+            node =q.get()
+            print(node.data,end=" ")
+            if node.left:
+                q.put(node.left)
+            if node.right:
+                q.put(node.right)
+
+    def post_order_tree_non_recursive(self,*args):
+        '''
+        后序非递归操作
+        :param args:
+        :return:
+        '''
+        if len(args) == 0:
+            node = self.root
+        else:
+            node = args[0]
+        pass
+
 
     def _delete_tree(self, data, T):
         if T is None:
@@ -161,19 +222,54 @@ class BSTree(object):
             raise TypeError(str(data) + "is not num")
         self.root = self._delete_tree(data, self.root)
 
-
-if __name__ == '__main__':
-    num_list = (8, 9, 16, 11, 2, 5, 17, 25, 35, 29, 38)
+def main():
+    '''
+         8
+        / \
+       2   9
+          / \
+         5  16
+            / \
+           11 17
+    '''
+    # num_list = (8, 9, 16, 11, 2, 5, 17)
+    # num_list = (10,15,6,4,2,3,11,16,13)
+    num_list = (3,4,2,6,7,1,8,5)
     tree = BSTree()
     for n in num_list:
         tree.insert(n)
 
-    tree.midorder_tree()
-    max_num = tree.get_tree_max()
-    min_num = tree.get_tree_min()
-    print(max_num, min_num)
-    tree.delete_tree(35)
-    tree.midorder_tree()
-    s = tree.find_tree_node(88)
-    print("---")
-    print(s)
+    # print("\n中序递归")
+    # tree.midorder_tree()
+    # print("\n中序非递归")
+    # tree.mid_order_tree_non_recursive()
+    # print("\n先序非递归")
+    # tree.pre_order_tree_non_recursive()
+    # print("\n先序递归")
+    # tree.preorder_tree()
+    print("\n后序非递归")
+    tree.postOrderNonRec()
+    print("\n后序递归")
+    tree.postorder_tree()
+    print("\n层次")
+    tree.levelorder_tree()
+    print("\n--")
+    # max_num = tree.get_tree_max()
+    # min_num = tree.get_tree_min()
+    # print(max_num, min_num)
+    # tree.delete_tree(35)
+    # tree.midorder_tree()
+    # s = tree.find_tree_node(88)
+    # print("---")
+    # print(s)
+def test_insert():
+    num_list = (30,15,41,33,50,35)
+    tree = BSTree()
+    for n in num_list:
+        tree.insert(n)
+        tree.levelorder_tree()
+        print("\n")
+
+if __name__ == '__main__':
+   main()
+    # test_insert()
