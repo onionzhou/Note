@@ -49,11 +49,28 @@ class BSTree(object):
             return None
 
         if data < node.data:
-            self.find_tree_node(data, node.left)
+            return self.find_tree_node(data, node.left)
         elif data > node.data:
-            self.find_tree_node(data, node.right)
+            return self.find_tree_node(data, node.right)
         else:
+            print("---"+str(node.data))
             return node.data
+
+    def find_tree_node_non_recursive(self,data,*args):
+        if len(args) == 0:
+            node = self.root
+        else:
+            node = args[0]
+        while node:
+            if data < node.data:
+                node = node.left
+            elif data > node.data:
+                node = node.right
+            else:
+                print("find _no "+ str(node.data))
+                return node.data
+        print("fuk")
+        return None
 
     def _insert(self, data, T):
 
@@ -247,29 +264,33 @@ def main():
     # tree.pre_order_tree_non_recursive()
     # print("\n先序递归")
     # tree.preorder_tree()
-    print("\n后序非递归")
-    tree.postOrderNonRec()
-    print("\n后序递归")
-    tree.postorder_tree()
-    print("\n层次")
-    tree.levelorder_tree()
-    print("\n--")
+    # print("\n后序非递归")
+    # tree.post_order_tree_non_recursive()
+    # print("\n后序递归")
+    # tree.postorder_tree()
+    # print("\n层次")
+    # tree.levelorder_tree()
+    # print("\n--")
     # max_num = tree.get_tree_max()
     # min_num = tree.get_tree_min()
     # print(max_num, min_num)
     # tree.delete_tree(35)
     # tree.midorder_tree()
-    # s = tree.find_tree_node(88)
-    # print("---")
-    # print(s)
-def test_insert():
+
+def test_find():
     num_list = (30,15,41,33,50,35)
     tree = BSTree()
     for n in num_list:
         tree.insert(n)
-        tree.levelorder_tree()
-        print("\n")
+    tree.levelorder_tree()
+    print("\n")
+    find_data = tree.find_tree_node(35)
+    find2=tree.find_tree_node_non_recursive(35)
+    max_num = tree.get_tree_max()
+    print(max_num,find_data,find2)
+    print("---")
+
 
 if __name__ == '__main__':
    main()
-    # test_insert()
+    # test_find()
