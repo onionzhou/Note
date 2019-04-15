@@ -54,11 +54,11 @@ def heap_sort(arr,n):
         heapify(arr,0,i)
 
 if __name__ == "__main__":
-    #此算法有问题待查
+    
     arr = [4,10,3,5,1,2]
-    arr1 = [2,5,3,1,6,7,8,10,4]
+    arr1 = [2,5,3,1,6,7,8,10,4,4]
     arr2 = [2,5,3,1,10,4]
     # heapify(arr,0,6)
     # build_max_heap(arr2,len(arr2))
-    heap_sort(arr2,len(arr2))
-    print(arr2)
+    heap_sort(arr1,len(arr1))
+    print(arr1)

@@ -23,16 +23,43 @@ class BSTree(object):
             node = self.root
         else:
             node = args[0]
+        if not node :
+            print("空树")
+            return
+
         if not node.right:
             return node.data
         else:
             return self.get_tree_max(node.right)
+
+    def get_tree_max_non_recursive(self,*args):
+        '''
+        非递归实现，一直走到最右边就是最大值
+        :param args:
+        :return:
+        '''
+        if len(args) == 0:
+            node = self.root
+        else:
+            node = args[0]
+        if not node :
+            print("空树")
+            return
+
+        while node.right :
+            node = node.right
+        return node.data
+
 
     def get_tree_min(self, *args):
         if len(args) == 0:
             node = self.root
         else:
             node = args[0]
+        if not node :
+            print("空树")
+            return
+
         if node.left:
             return self.get_tree_min(node.left)
         else:
@@ -61,20 +88,23 @@ class BSTree(object):
             node = self.root
         else:
             node = args[0]
+        if not node :
+            print("空树")
+            return
+
         while node:
             if data < node.data:
                 node = node.left
             elif data > node.data:
                 node = node.right
             else:
-                print("find _no "+ str(node.data))
+                # print("find "+ str(node.data))
                 return node.data
-        print("fuk")
         return None
 
     def _insert(self, data, T):
 
-        if not T:
+        if not T: #树空
             T = Node(data)
         else:
             if data < T.data:
@@ -112,6 +142,10 @@ class BSTree(object):
         else:
             node = args[0]
 
+        if not node :
+            print("空树")
+            return
+
         print(node.data, end=' ')
 
         if node.left:
@@ -125,6 +159,10 @@ class BSTree(object):
             node = self.root
         else:
             node = args[0]
+        if not node :
+            print("空树")
+            return
+
         if node.left:
             self.midorder_tree(node.left)
         print(node.data, end=' ')
@@ -137,6 +175,9 @@ class BSTree(object):
             node = self.root
         else:
             node = args[0]
+        if not node :
+            print("空树")
+            return
 
         if node.left:
             self.postorder_tree(node.left)
@@ -150,6 +191,10 @@ class BSTree(object):
             node = self.root
         else:
             node = args[0]
+        if not node :
+            print("空树")
+            return
+
         s = queue.LifoQueue()
         while node or not s.empty():
             while node :
@@ -170,6 +215,10 @@ class BSTree(object):
             node = self.root
         else:
             node = args[0]
+        if not node :
+            print("空树")
+            return
+
         s = queue.LifoQueue()
         while node or not s.empty():
             while node :
@@ -186,6 +235,9 @@ class BSTree(object):
             node = self.root
         else:
             node = args[0]
+        if not node :
+            print("空树")
+            return
         q.put(node)
         while (not q.empty() ):
             node =q.get()
@@ -210,16 +262,16 @@ class BSTree(object):
 
     def _delete_tree(self, data, T):
         if T is None:
-            raise KeyError("data not found ")
+            raise KeyError("del data not found ")
         elif data < T.data:
-            T.left = self._delete_tree(data, T.left)
+            T.left = self._delete_tree(data, T.left) #左子树删除
             #T.height = max(self.get_height(T.left), \
              #              self.get_height(T.right))
         elif data > T.data:
-            T.right = self._delete_tree(data, T.right)
+            T.right = self._delete_tree(data, T.right) #右子树删除
             #T.height = max(self.get_height(T.left), \
              #              self.get_height(T.right))
-        elif T.left and T.right:  # two children
+        elif T.left and T.right:  # 被删除结点有 two children
             # replace with smallest in right subtree
             tmp = self.get_tree_min(T.right)
 
@@ -287,10 +339,13 @@ def test_find():
     find_data = tree.find_tree_node(35)
     find2=tree.find_tree_node_non_recursive(35)
     max_num = tree.get_tree_max()
-    print(max_num,find_data,find2)
-    print("---")
+    max_num2 = tree.get_tree_max_non_recursive()
 
+    print(max_num,max_num2,find_data,find2)
+    print("---")
+    tree.delete_tree(50)
+    print(tree.levelorder_tree())
 
 if __name__ == '__main__':
-   main()
-    # test_find()
+   # main()
+    test_find()
