@@ -54,7 +54,7 @@ def heap_sort(arr,n):
         heapify(arr,0,i)
 
 if __name__ == "__main__":
-    
+
     arr = [4,10,3,5,1,2]
     arr1 = [2,5,3,1,6,7,8,10,4,4]
     arr2 = [2,5,3,1,10,4]
