@@ -13,7 +13,6 @@ def bubble_sort(arr):
         # 如果一趟排序没有交换说明序列有序跳出循环
         if 0 == flag:
             break
-
     return arr
 
 

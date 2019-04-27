@@ -50,8 +50,8 @@ def build_max_heap(arr,heapsize):
 def heap_sort(arr,n):
     build_max_heap(arr,n)
     for i in range(n-1 ,-1,-1):
-        arr[0],arr[i] = arr[i],arr[0] #根结点和最后一个结点值
-        heapify(arr,0,i)
+        arr[0],arr[i] = arr[i],arr[0] #根结点和最后一个结点值 deleteMax
+        heapify(arr,0,i) #调整堆
 
 if __name__ == "__main__":
 

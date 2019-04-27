@@ -13,7 +13,7 @@ class Node(object):
 
 class SingleList(object):
     def __init__(self):
-        self._head =  Node()
+        self._head = Node()
         self._tail = self._head
 
 
@@ -73,4 +73,7 @@ if __name__ == "__main__":
         # x.add_tail(i)
     print(x.traversal())
     x.remove_list()
+    print("===")
     print(x.traversal())
+
+
