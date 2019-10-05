@@ -91,6 +91,6 @@ if __name__ == '__main__':
     # test_func()
     # func1()
     # func2(2,1)
-    # func3(2,3,4)
+    func3(2,3,4)
     print(func4())
 

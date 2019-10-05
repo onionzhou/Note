@@ -186,6 +186,7 @@ class BSTree(object):
             self.postorder_tree(node.right)
 
         print(node.data, end=' ')
+
     def mid_order_tree_non_recursive(self,*args):
         if len(args) == 0:
             node = self.root
@@ -205,6 +206,7 @@ class BSTree(object):
                 node = s.get()
                 print(node.data,end=" ")
                 node =node.right
+
     def pre_order_tree_non_recursive(self,*args):
         '''
         先序非递归操作
