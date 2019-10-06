@@ -32,6 +32,14 @@ class UnorderList(object):
     def is_empty(self):
         return self.head == None
 
+    '''
+        新增 节点 26
+            * 26 的next 指向 93
+            * head 指向 26 
+        head ---> [93|-]---->[66|-]--->[33|-] --->None
+                    
+             [26|-]--->None
+    '''
     def add(self, item):
         tmp = Node(item)
         tmp.set_next(self.head)
@@ -69,6 +77,19 @@ class UnorderList(object):
                 '''必须先移动pre 到cur，再移动cur,<蠕动>'''
                 previous = cur
                 cur = cur.get_next()
+        '''
+        previous不为空 在中间， 空说明第一个节点就是要移除的节点
+        A:移除列表中段节点
+                                previous    cur
+        head ---> [93 | -]----> [66 |-]---> [17|-]---> [33 |-]--->None
+        
+        B:移除链表第一个节点
+        
+        previous --->None
+                    cur
+        head ---> [93 | -]----> [66 |-]---> [17|-]---> [33 |-]--->None
+            
+        '''
         if previous != None:
             previous.set_next(cur.get_next)
         else:
