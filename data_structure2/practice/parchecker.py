@@ -67,7 +67,3 @@ def par_checker1(symbolStr):
         return False
 
 
-if __name__ == '__main__':
-    sym = '{[()]}}'
-    p = par_checker1(sym)
-    print(p)
