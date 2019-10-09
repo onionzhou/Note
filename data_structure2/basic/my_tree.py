@@ -4,7 +4,7 @@
 # datetime:2019/10/8 11:11
 # software: PyCharm
 
-class BinaryTree():
+class BinaryTree(object):
     def __init__(self, rootobj=None):
         self.key = rootobj
         self.left_child = None
@@ -82,6 +82,9 @@ class TreeNode(object):
     def has_anychildren(self):
         return self.rightchild or self.leftchild
 
+    def has_bothchildren(self):
+        return self.rightchild and self.leftchild
+
     def replace_nodedata(self, key, value, lc, rc):
         self.key = key
         self.payload = value
@@ -92,6 +95,63 @@ class TreeNode(object):
             self.leftchild.parent = self
         if self.has_rightchild():
             self.rightchild.parent = self
+
+    def find_min(self):
+        current = self
+        while current.has_leftchild():
+            current = current.leftchild
+        return current
+
+    def find_successor(self):
+        '''找后继节点
+        1.如果节点有右节点，那么后继节点就是右子树的中最小的节点
+        2.如果节点没有右节点，并且 其本身是父节点的左子节点，那么后继节点就是父节点
+        3.如果节点是父节点的右节点，且其本身没有右子节点，那么后继节点就是除其本身外父节点的后继节点
+        '''
+        suc = None
+        if self.has_rightchild():
+            suc = self.rightchild.find_min()
+        else:
+            if self.parent:
+                if self.is_leftchild():
+                    suc = self.parent
+                else:
+                    self.parent.rightchild = None
+                    suc = self.parent.find_sucfind_successor()
+                    self.parent.rightchild = self
+        return suc
+
+    def spliceout(self):
+        '''移除后继节点'''
+        if self.is_leaf():
+            if self.is_leftchild():
+                self.parent.leftchild = None
+            else:
+                self.parent.rightchild = None
+        elif self.has_anychildren():
+            if self.has_leftchild():
+                if self.is_leftchild():
+                    self.parent.leftchild = self.leftchild
+                else:
+                    self.parent.rightchild = self.leftchild
+                self.leftchild.parent = self.parent
+            else:
+                if self.is_leftchild():
+                    self.parent.leftchild = self.rightchild
+                else:
+                    self.parent.rightchild = self.rightchild
+                self.rightchild.parent = self.parent
+
+    def __iter__(self):
+        '''此处用的 先序遍历，递归操作'''
+        if self:
+            yield self.key
+            if self.has_leftchild():
+                for elem in self.leftchild:
+                    yield elem
+            if self.has_rightchild():
+                for elem in self.rightchild:
+                    yield elem
 
 
 class BinSearchTree(object):
@@ -141,6 +201,90 @@ class BinSearchTree(object):
         else:
             return None
 
+    def remove(self, curnode):
+        '''
+        当找到待删除的结点,3种情况
+        1.删除结点没有叶子结点
+        2.删除结点只有一个子节点
+        3.删除结点右两个子节点
+        :param curnode: 待删除结点
+        :return:
+        '''
+        if curnode.is_leaf():  # 情况1， 没有叶子结点
+            if curnode == curnode.parent.left_child:
+                curnode.parent.left_child = None
+            else:
+                curnode.parent.right_child = None
+        elif curnode.has_bothchildren():  # 情况3  有两个子节点
+            '''删除该节点需要找一个候选节点替代该位置，该节点要能够保持
+            二叉搜索树的关系， 这个候选节点也叫后继节点
+            '''
+            suc = curnode.find_successor()
+            suc.spliceout()
+            curnode.key = suc.key
+            curnode.payload = suc.payload
+
+        else:  # 情况2 只有一个子节点
+            '''
+            1.如果当前节点 是一个左子节点，那
+                (curnode.leftchild.parent = curnode.parent):当前节点的左子节点对父节点的引用改为指向当前节点的父节点
+                (curnode.parent.left_child = curnode.leftchild):父节点对当前节点的引用改为指向当前节点的左子节点
+
+            2.当前节点 是一个右子节点，   curnode的right_childnode 的引用指向 curnode的parent_node
+            父节点对当前节点的引用改为指向当前节点的右子节点
+
+            3. 当前节点 没有父节点，那它肯定是根节点，调用replace_nodedata 方法，替换根节点的key,payload
+             leftchild rightchild
+
+            4，5，6. 如果当前节点 是一个右孩子,思路类似123
+            '''
+            if curnode.has_leftchild():  # 当前节点左孩子
+                if curnode.is_leftchild():
+                    curnode.leftchild.parent = curnode.parent
+                    curnode.parent.leftchild = curnode.leftchild
+
+                elif curnode.is_rightchild():
+                    curnode.leftchild.parent = curnode.parent
+                    curnode.parent.rightchild = curnode.rightchild
+                else:
+                    curnode.replace_nodedata(
+                        curnode.leftchild.key,
+                        curnode.leftchild.payload,
+                        curnode.leftchild.leftchild,
+                        curnode.leftchild.rightchild
+                    )
+            else:  # 右孩子
+                if curnode.is_rightchild():
+                    curnode.rightchild.parent = curnode.parent
+                    curnode.parent.rightchild = curnode.rightchild
+                elif curnode.if_leftchild():
+                    curnode.rightchild.parent = curnode.parent
+                    curnode.parent.leftchild = curnode.rightchild
+                else:
+                    curnode.replace_nodedata(
+                        curnode.rightchild.key,
+                        curnode.rightchild.payload,
+                        curnode.rightchild.leftchild,
+                        curnode.rightchild.rightchild
+                    )
+
+    def delete(self, key):
+        if self.size > 1:
+            node_toremove = self._get(key, self.root)
+            if node_toremove:
+                self.remove(node_toremove)
+                self.size = self.size - 1
+            else:
+                raise KeyError('Error,key not in tree!')
+        elif self.size == 1 and self.root.key == key:
+            self.root = None
+            self.size = self.size - 1
+        else:
+            raise KeyError('Error,key not in tree!')
+
+    def __delitem__(self, key):
+        self.delete(key)
+
     def __setitem__(self, key, value):
         '''重载[]，写出mytree['num'] = 123456 这样的语句'''
         self.put(key, value)
@@ -156,8 +300,22 @@ class BinSearchTree(object):
 
     def __contains__(self, key):
         '''实现 in 方法'''
-        if self._get(key,self.root):
+        if self._get(key, self.root):
             return True
         else:
             return False
+
+
+if __name__ == '__main__':
+    alist = [17, 5, 25, 2, 11, 35, 9, 16, 29, 38, 7]
+    t = BinSearchTree()
+    for i in alist:
+        t.put(i, i)
+    print(t.get(25))
+    for i in t :
+        print(i,end=' ')
+    print(" ")
+    t.delete(25)
+    for i in t :
+        print(i,end=' ')
 
