@@ -57,26 +57,28 @@ def part(arr, left, right):
 
     arr[left] = pivot
     return left
-#快排实现3
-#算法导论 170
-#对子数组原址重排
+
+
+# 快排实现3
+# 算法导论 170
+# 对子数组原址重排
 def partion(arr, left, right):
     pivot = arr[right]
     i = left - 1
-    #注意右边界问题，python中 right 其值取到 right-1
+    # 注意右边界问题，python中 right 其值取到 right-1
     for j in range(left, right):
 
         if arr[j] <= pivot:
             i = i + 1
             arr[i], arr[j] = arr[j], arr[i]
     arr[i + 1], arr[right] = arr[right], arr[i + 1]
-    #print(arr)
+    # print(arr)
     return i + 1
 
 
 def _quick_sort(arr, left, right):
     if left < right:
-        #pivot = part(arr, left, right)
+        # pivot = part(arr, left, right)
         pivot = partion(arr, left, right)
         print(pivot)
         _quick_sort(arr, left, pivot - 1)
@@ -91,7 +93,7 @@ def quick_sort(arr):
 
 def quick_sort_test2():
     my_list = [49, 38, 65, 97, 76, 13, 27, 49]
-    #my_list = [2, 8, 7, 1, 3, 5, 6, 4]
+    # my_list = [2, 8, 7, 1, 3, 5, 6, 4]
     print(quick_sort(my_list))
 
 

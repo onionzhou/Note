@@ -9,8 +9,8 @@
 def bubble_sort(alist):
     '''冒泡 O(n²)'''
     for num in range(len(alist) - 1, 0, -1):
-        for i in num:
-            if alist[i] > alist[i + 1]:
+        for i in range(num):
+            if alist[i] > alist[i + 1]: #大的在后面
                 alist[i], alist[i + 1] = alist[i + 1], alist[i]
 
 
@@ -182,5 +182,6 @@ if __name__ == '__main__':
     # insert_sort(alist)
     # shell_sort(alist)
     # merge_sort(alist)
-    quick_sort(alist)
+    # quick_sort(alist)
+    bubble_sort(alist)
     print(alist)
