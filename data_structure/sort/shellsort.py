@@ -26,5 +26,5 @@ def shell_sort(arr):
 
 if __name__ == "__main__":
     l = [9, 3, 2, 8, 5, 7, 1]
-    arr = [34, 8, 64, 51, 32, 31]
-    print(shell_sort(arr))
+    alist = [54, 26, 93, 17, 77, 31, 44, 55, 20]
+    print(shell_sort(alist))

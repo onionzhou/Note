@@ -51,13 +51,15 @@ class TreeNode(object):
                  val,
                  left=None,
                  right=None,
-                 parent=None
+                 parent=None,
+                 balancefactor=None
                  ):
         self.key = key
         self.payload = val
         self.leftchild = left
         self.rightchild = right
         self.parent = parent
+        self.balancefactor = balancefactor
 
     def has_leftchild(self):
         return self.leftchild
@@ -305,6 +307,106 @@ class BinSearchTree(object):
         else:
             return False
 
+#未验证
+class Avltree(BinSearchTree):
+    def __init__(self):
+        super().__init__()
+
+    def put(self, key, val):
+        pass
+
+    def _put(self, key, val, curnode):
+        if key < curnode.key:
+            if curnode.has_leftchild():
+                self._put(key, val, curnode.leftchild)
+            else:
+                curnode.leftchild = TreeNode(key, val, parent=curnode)
+            # 更新平衡因子
+            self.update_balance(curnode.leftchild)
+
+        elif key > curnode.key:
+            if curnode.has_rightchild():
+                self._put(key, val, curnode.rightchild)
+            else:
+                curnode.rightchild = TreeNode(key, val, parent=curnode)
+                # if key == curnode.key ,do nothing
+            # 更新平衡因子
+            self.update_balance(curnode.rightchild)
+
+    def update_balance(self, node):
+        '''
+        balancefactor = height(leftsubtree) - height(rightsubtree)
+        >0 左倾  balancefactor +1
+        =0 平衡  balancefactor  0
+        <0 右倾  balancefactor -1
+
+        插入父节点
+        :param node:
+        :return:
+        '''
+        if node.balancefactor > 1 or node.balancefactor < -1
+            self.rebalance(node)
+            return
+        if node.parent != None:
+            if node.is_leftchild():
+                node.parent.balancefactor += 1
+            elif node.is_rightchild():
+                node.parent.balancefactor -= 1
+            if node.parent.balancefactor != 0:
+                self.update_balance(node.parent)
+
+    def rebalance(self, node):
+        if node.balancefactor < 0:
+            if node.rightchild.balancefactor > 0:
+                self.rotate_right(node.rightchild)
+                self.rotate_left(node)
+            else:
+                self.rotate_left(node)
+        elif node.balancefactor > 0:
+            if node.leftchild.balancefactor < 0:
+                self.rotate_left(node.leftchild)
+                self.rotate_right(node)
+            else:
+                self.rotate_right(node)
+
+    def rotate_left(self, rotroot):
+        '''
+             'A|-2'
+                \                       'B|0'
+                'B|-1'       --->        / \
+                    \                'A|0'  'C|0'
+                    'C|0'
+
+        左旋：、
+        1.将右节点（B） ---> 子树的根节点
+        2.将旧根节点（A）--> 作为新根的左节点
+        3.如果新根节点（B）有左节点，将其添加到新左节点（A）的右节点
+            <因为,A节点的右节点以前是链接B节点的，所以左旋后，A肯定没有右节点>
+        :return:
+        '''
+        newroot = rotroot.rightchild
+        rotroot.rightchild = newroot.leftchild
+        if newroot.leftchild != None:
+            newroot.leftchild.parent = rotroot
+        newroot.parent = rotroot.parent
+
+        if rotroot.is_root():
+            self.root = newroot
+        else:
+            if rotroot.is_leftchild():
+                rotroot.parent.leftchild = newroot
+            else:
+                rotroot.parent.rightchild = newroot
+
+        newroot.leftchild = rotroot
+        rotroot.parent = newroot
+
+        rotroot.balancefactor = rotroot.balancefactor + 1 - min(newroot.balancefactor, 0)
+        newroot.balancefactor = newroot.balancefactor + 1 - max(rotroot.balancefactor, 0)
+
+    def rotate_right(self):
+        pass
+
 
 if __name__ == '__main__':
     alist = [17, 5, 25, 2, 11, 35, 9, 16, 29, 38, 7]
@@ -312,10 +414,9 @@ if __name__ == '__main__':
     for i in alist:
         t.put(i, i)
     print(t.get(25))
-    for i in t :
-        print(i,end=' ')
+    for i in t:
+        print(i, end=' ')
     print(" ")
     t.delete(25)
-    for i in t :
-        print(i,end=' ')
-
+    for i in t:
+        print(i, end=' ')
