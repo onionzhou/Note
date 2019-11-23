@@ -82,10 +82,14 @@ def fib_memo(n):
     memo = [None] * (n + 1)
     return fib(n, memo)
 
-
 # dp求解思路 fib
 # 1.递归 2.存储memo  3. bottom_up
 def fib_bottom_up(n):
+    if not isinstance(n,int):
+        raise TypeError('参数不为int')
+    if n < 1:
+        raise ValueError('参数最小为1')
+
     if n == 1 or n == 2:
         return 1
     bottom_up = [None] * (n + 1)
