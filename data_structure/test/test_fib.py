@@ -5,6 +5,8 @@
 #  @Site    :
 #  @File    : test_fib.py
 #  @Software: PyCharm
+import  sys
+sys.path.append('../../')
 from data_structure.Recursive_test.fibonacci_test import *
 import pytest
 
@@ -32,3 +34,9 @@ class Testfib():
     @pytest.mark.xfail(raises=ValueError)
     def test_fib_except3(self):
         fib_bottom_up(0)
+
+    def test_fib_except4(self):
+        #异常处理判断异常信息
+        with pytest.raises(ValueError) as excinfo:
+            fib_bottom_up(0)
+        assert '参数最小' in str(excinfo.value)
