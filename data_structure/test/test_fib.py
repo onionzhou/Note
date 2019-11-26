@@ -5,12 +5,21 @@
 #  @Site    :
 #  @File    : test_fib.py
 #  @Software: PyCharm
-import  sys
+import sys
 sys.path.append('../../')
 from data_structure.Recursive_test.fibonacci_test import *
 import pytest
 
+
 class Testfib():
+    @classmethod
+    def setup_class(cls):
+        print('类执行前')
+
+    @classmethod
+    def teardown_class(cls):
+        print('类执行后')
+
     def test_fib_bottom_up_return_type(self):
         result = fib_bottom_up(5)
         assert isinstance(result, int)
@@ -28,15 +37,22 @@ class Testfib():
             fib_bottom_up(0.1)
 
     def test_fib_except2(self):
-        with pytest.raises(ValueError,match='参数最小为1') as info:
+        print('test_fib_except2')
+        with pytest.raises(ValueError, match='参数最小为1') as info:
             fib_bottom_up(0)
 
     @pytest.mark.xfail(raises=ValueError)
     def test_fib_except3(self):
+
         fib_bottom_up(0)
 
     def test_fib_except4(self):
-        #异常处理判断异常信息
+        # 异常处理判断异常信息
+        print('test_fib_except4')
         with pytest.raises(ValueError) as excinfo:
             fib_bottom_up(0)
-        assert '参数最小' in str(excinfo.value)
+        assert '参数最d' in str(excinfo.value)
+
+
+if __name__ == '__main__':
+    pytest.main(['-q', 'test_fib.py::Testfib::test_fib_except4'])
