@@ -70,18 +70,11 @@ def del_testsuit(tls):
 
 def get_testsuitid(tls):
     project_name = 'project_4'
-    testplan_name = 'test_plan_1'
-    project_id = tls.getProjectIDByName(project_name)
-    testplans = tls.getProjectTestPlans(project_id)
-    print(testplans)
-    for testplan in testplans:
-        if testplan['name'] == testplan_name:
-            testplan_id = testplan['id']
-            break
-
-    ret = tls.getTestSuitesForTestPlan(testplan_id)
-    print(ret)
-
+    prefix = 'project'
+    testsuitname = 'http'
+    ret =tls.getTestSuite(testsuitname,prefix)
+    return ret[0]['id']
+    # print(ret)
 
 def create_testcase(tls):
     MANUAL = 1
@@ -165,4 +158,7 @@ if __name__ == '__main__':
     # create_testsuit(tls)
     # get_testsuitid(tls)
     # create_testcase(tls)
-    create_testcase2(tls)
+    # create_testcase2(tls)
+    r=get_testsuitid(tls)
+    print(r)
+    print(tls.countTestSuites())
