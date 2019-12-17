@@ -6,6 +6,7 @@
 
 import testlink
 from testlink_test.config import POST_URL, API_KEY
+from customerror import AtArgError
 
 
 def con_testlink():
@@ -150,6 +151,20 @@ def create_testcase2(tls):
 def del_testcase(tls):
     pass
 
+def get_testcase(tls):
+    #@decoMakerApiCallWithArgs(['testcasename'],
+                    # ['testsuitename', 'testprojectname', 'testcasepathname'])
+    testcasename = 'http_ip2'
+    testprojectname='project_4'
+    ret=tls.getTestCaseIDByName(testcasename,testprojectname=testprojectname)
+    case_id =ret[0].get('id')
+    if case_id is not None:
+        raise AtArgError(r'case id is None ')
+    print(case_id)
+    # @decoMakerApiCallWithArgs([], ['testcaseid', 'testcaseexternalid', 'version'])
+    ret=tls.getTestCase(case_id)
+    print(ret)
+
 
 if __name__ == '__main__':
     tls = con_testlink()
@@ -159,6 +174,7 @@ if __name__ == '__main__':
     # get_testsuitid(tls)
     # create_testcase(tls)
     # create_testcase2(tls)
-    r=get_testsuitid(tls)
-    print(r)
-    print(tls.countTestSuites())
+    # r=get_testsuitid(tls)
+    get_testcase(tls)
+    # print(r)
+    # print(tls.countTestSuites())
