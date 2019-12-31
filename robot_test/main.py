@@ -7,4 +7,5 @@
 from robot import  run
 
 if __name__ == '__main__':
-    run('./demo/baidu_test')
+    # run('./demo/baidu_test/command_test.robot')
+    run('./demo/testlink_test/login_test/invaild_login.robot')
