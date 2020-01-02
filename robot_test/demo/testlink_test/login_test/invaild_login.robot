@@ -11,16 +11,17 @@ Resource          ../resource.robot
 *** Test Cases ***      login_name          pwd
 #test case  名字为 Invalid Username ，  ${username}=invalid ${password}=${PASSWD}
 Invalid Username       invalid           ${PASSWD}
-Invalid Password       xxxx              xxdddd
-
+Invalid Password       admin             xxdddd
+Empty Username          ${EMPTY}        ${PASSWD}
+Empty Password          admin           ${EMPTY}
 
 *** Keywords ***
 invalid login should be failed
     [Arguments]    ${username}    ${password}
     Input Loginname     ${username}
     Input Passwd        ${password}
-#    Click Login Button
-
+    Click Login Button
+    login should fail
 
 
 

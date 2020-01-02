@@ -36,7 +36,15 @@ Input Passwd
 
 Click Login Button
     Click Button    Log in
+
+#    Log     ${title}
+Login Should Sucess
     ${title}    Get Title
     # 正则匹配
     Should Match Regexp      ${title}   TestLink\*
-#    Log     ${title}
+
+#小写的为自己定义的关键字方法
+login should fail
+    ${title}    Get Title
+    # 正则匹配
+    Should Not Match Regexp      ${title}   TestLink\*
