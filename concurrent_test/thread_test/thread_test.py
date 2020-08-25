@@ -23,8 +23,11 @@ class MyThread(threading.Thread):
         threading.Thread.__init__(self)
         # super(MyThread,self).__init__()
         self.arg =arg
+    def test(self):
+        print('test')
     def run(self):
         time.sleep(1)
+
         print("test thread {}".format(self.arg))
 def create_class_thread():
     for i  in range(10):
