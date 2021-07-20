@@ -29,5 +29,6 @@ def daemon_old_test():
         t.start()
     print("daemon main thread end ")
 if __name__ == "__main__":
-    #no_daemon_test()
-    daemon_test()
+    # no_daemon_test()
+    # daemon_test()
+    daemon_old_test()

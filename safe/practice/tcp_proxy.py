@@ -35,16 +35,40 @@ def server_loop(local_host, local_port, remote_host, remote_port, receive_first)
 
 
 def receive_from(con):
-    pass
+    buffer =""
+    con.settimeout(2)
+    try:
+        while  True:
+            data = con.recv(4096)
+            if not data:
+                break
+            buffer +=data
+    except:
+        pass
 
+    return buffer
+
+
+#对目标是远程主机的请求进行修改
+def request_handler(buffer):
+    #执行包修改
+    return buffer
+
+#对目标是远程主机的响应进行修改
+def response_handler(buffer):
+    return buffer
 
 def hexdump(src, length=16):
     result = []
-    digits = 4 if isinstance(src, unicode) else 2
+    digits = 4 if isinstance(src, str) else 2
+    for i in range(0, len(src), length):
+        s = src[i:i + length]
+        hexa = ' '.join(["%0*X" % (digits, ord(x)) for x in s])
+        text = ''.join([x if 0x20 <= ord(x) < 0x7F else '.' for x in s])
+        result.append("%04X   %-*s   %s" % (i, length * (digits + 1), hexa, text))
+    return '\n'.join(result)
 
 
-def response_handler(data):
-    pass
 
 
 def proxy_handler(client_socket, remote_host, remote_port, receive_first):
@@ -75,7 +99,7 @@ def proxy_handler(client_socket, remote_host, remote_port, receive_first):
             remote_socket.send(local_buffer)
             print("[==>] sent to remote ")
 
-        #
+        # 接收响应数据
         remote_buffer = receive_from(remote_socket)
 
         if len(remote_buffer):
@@ -119,3 +143,8 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # s = ("This 10 line function is just a sample of pyhton power "
+    #      "for string manipulations.\n"
+    #      "The code is \x07even\x08 quite readable!")
+    # ret =hexdump(s)
+    # print(ret)

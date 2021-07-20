@@ -1,0 +1,57 @@
+#!/usr/bin/expect
+
+# expect  deploy.exp <target_ip> <board> <release>
+
+#set IP 10.0.83.126
+set timeout 60
+set IP [lindex $argv 0]
+set BOARD [lindex $argv 1]
+set RELEASE [lindex $argv 2]
+
+set PASSWD 123456
+set SCRIPT ngfw_deploy.sh 
+set INSTALL_SCRIPT  ./$SCRIPT
+set INSTALL_PACK /data/ftp/ngfw/ngfw_$RELEASE.tar.gz 
+
+proc  upload_pack {ip passwd file file1} { #注意空格
+    spawn scp $file $file1 root@$ip:~
+    #spawn ssh root@$ip uptime
+    expect {
+        "yes/no" {send "yes\n";exp_continue}
+        "*password" {send "$passwd\n"}
+    }
+    expect eof
+
+}
+
+proc install_pack {ip passwd script script_param1 script_param2} {
+    #set timeout 30 
+    spawn ssh root@$ip
+    expect {
+        "yes/no" {send "yes\n";exp_continue}
+        "*password" {send "$passwd\n"}
+    }
+    expect eof
+    
+    send_user "login $ip sucessful ... \n" 
+    send_user "install pack...!!\n" 
+    expect "*~]#"
+    send "ls\n"
+    expect "*~]#"
+    send_user "source $script $script_param1 $script_param2 \n"
+    send "source $script $script_param1 $script_param2 \n"
+    expect eof
+    send_user "exe $script install pack end... !! \n" 
+    
+    
+}
+
+
+send_user "begin upload $INSTALL_SCRIPT $INSTALL_PACK ... \n" 
+upload_pack $IP $PASSWD $INSTALL_SCRIPT $INSTALL_PACK
+send_user "upload sucessful ...\n" 
+
+send_user "begin install pack ..\n" 
+install_pack $IP $PASSWD $SCRIPT $BOARD $RELEASE
+send_user "install pack end ....\n" 
+

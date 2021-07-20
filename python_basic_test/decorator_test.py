@@ -127,9 +127,7 @@ def say_hello(contry):
                 return
             # 真正执行函数的地方
             return func(*args, **kwargs)
-
         return deco
-
     return wrapper
 
 #装饰器带参数

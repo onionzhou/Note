@@ -1,0 +1,101 @@
+---
+config:
+  name: 访问控制板链接
+  variables:
+    username: "admin"
+    password: "%241.2KyJStyQMb3dnw2PESwlsRJs"
+    base_url: "https://10.0.80.34/index.php"
+  verify: false
+teststeps:
+- name: 获取 ctoken
+  request:
+    headers:
+      charset: utf-8
+      DNT: '1'
+      Sec-Fetch-Mode: navigate
+      Sec-Fetch-Site: same-origin
+      Sec-Fetch-User: "?1"
+    method: GET
+    url: "$base_url"
+  extract:
+    ctoken: '<input id=\"ctoken\" type=\"hidden\" value=\"(.*)\"> '
+  validate:
+  - eq:
+    - status_code
+    - 200
+  - eq:
+    - headers.Content-Type
+    - text/html
+- name: 登录认证
+  request:
+    data:
+      captcha: undefined
+      ctoken: "$ctoken"
+      method: pwd
+      pwd: "$password"
+      thirdinfo: undefined
+      username: "$username"
+    headers:
+      charset: utf-8
+      Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+      DNT: '1'
+      Sec-Fetch-Mode: cors
+      Sec-Fetch-Site: same-origin
+      X-Requested-With: XMLHttpRequest
+    method: POST
+    url: "${base_url}/login/auth3"
+  validate:
+  - eq:
+    - status_code
+    - 200
+  - eq:
+    - headers.Content-Type
+    - text/html
+  - eq:
+    - content.errcode
+    - 0
+- name: 访问控制板
+  request:
+    headers:
+      charset: utf-8
+      DNT: '1'
+      Sec-Fetch-Mode: navigate
+      Sec-Fetch-Site: same-origin
+      Sec-Fetch-User: "?1"
+    method: GET
+    url: "${base_url}/dashboard"
+
+  extract:
+    dashboard: "<title>(.*)</title>"
+  validate:
+  - eq:
+    - status_code
+    - 200
+  - eq:
+    - headers.Content-Type
+    - text/html
+  - eq:
+    - "$dashboard"
+    - 控制板
+
+  request:
+    headers:
+      DNT: '1'
+      Sec-Fetch-Mode: navigate
+      Sec-Fetch-Site: same-origin
+      Sec-Fetch-User: "?1"
+    method: GET
+    url: "${base_url}/system/alarm"
+
+  extract:
+    system: "<title>(.*)</title>"
+  validate:
+  - eq:
+    - status_code
+    - 200
+  - eq:
+    - headers.Content-Type
+    - text/html
+  - eq:
+    - "$system"
+    - 系统报警

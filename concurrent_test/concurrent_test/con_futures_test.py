@@ -16,8 +16,8 @@ import os
 def thread_task(n):
     print("{} task running {}".format(threading.current_thread().name,n))
     #time.sleep(2)
-def process_task(n):
-    print("{} task running {}".format(os.getpid(), n))
+def process_task(n,n2):
+    print("{} task running {}--{}".format(os.getpid(), n,n2))
     time.sleep(2)
 
 def thread_pool_test():
@@ -32,7 +32,7 @@ def process_pool_test():
     result_list = []
     p = ProcessPoolExecutor()
     for i in range(100):
-        obj =p.submit(process_task, i)
+        obj =p.submit(process_task, i,5)
         result_list.append(obj)
     p.shutdown()  #类似于thread join 方法
 
@@ -42,12 +42,14 @@ def process_pool_test():
 def process_pool_test2():
     with ProcessPoolExecutor() as p :
         # p_task = [p.submit(process_task,i) for i in range(100)]
-        p_task = [p.map(process_task, range(10)) ]   #map 方法使用
+        # p_task = []   #map 方法使用
+        ret =p.map(process_task, range(4),range(5))
+        print(ret)
     print("main process end ")
 
 if __name__ == '__main__':
     start = time.time()
     # thread_pool_test()
-    # process_pool_test()
-    process_pool_test2()
+    process_pool_test()
+    # process_pool_test2()
     print(time.time() -start)

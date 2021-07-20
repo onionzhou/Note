@@ -69,7 +69,7 @@ def test_list_1():
 
 if __name__ == "__main__":
     t1 = time.time()
-    # join_test()
+    join_test()
     # no_join_test()
-    mul_to_single_thread()
+    # mul_to_single_thread()
     print(time.time() - t1)
