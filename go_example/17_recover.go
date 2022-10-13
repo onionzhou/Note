@@ -14,7 +14,6 @@ func test(x int) {
 		if err := recover(); err != nil {
 			fmt.Println(err)
 		}
-
 	}() //调用匿名函数
 	var a [10]int
 	a[x] = 10
